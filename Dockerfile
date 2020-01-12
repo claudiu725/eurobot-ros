@@ -1,12 +1,13 @@
-FROM balenalib/aarch64-ubuntu-python:latest-bionic
+FROM balenalib/aarch64-ubuntu:bionic
 
 RUN [ "cross-build-start" ]
 
-# Prepare and install ros2 eloquent
+# Prepare and install ros melodic
 RUN install_packages curl gnupg2 lsb-release
-RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
-RUN sh -c 'echo "deb [arch=amd64,arm64] http://packages.ros.org/ros2/ubuntu `lsb_release -cs` main" > /etc/apt/sources.list.d/ros2-latest.list'
-RUN install_packages ros-eloquent-ros-base
+RUN curl -sSL 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xC1CF6E31E6BADE8868B172B4F42ED6FBAB17C654' | sudo apt-key add -
+RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+RUN install_packages ros-melodic-ros-base
+RUN install_packages ros-melodic-navigation
 
 # Prepare and install wiringpi
 # Install add-apt-repository
