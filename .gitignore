@@ -1,0 +1,8 @@
+build/
+devel/
+install/
+
+src/ydlidar
+src/differential_drive
+
+*.pyc

@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# script/bootstrap: Resolve all dependencies that the application requires to
+#                   run.
+
+set -e
+set -x
+
+# Absolute path to this script, e.g. /home/user/bin/foo.sh
+SCRIPT=$(readlink -f "$0")
+# Absolute path this script is in, thus /home/user/bin
+SCRIPTPATH=$(dirname "$SCRIPT")/..
+
+FOLDER="$SCRIPTPATH/src/ydlidar"
+if [ ! -d "$FOLDER" ] ; then
+    git -c advice.detachedHead=false clone --depth 1 https://github.com/EAIBOT/ydlidar.git --branch 1.3.9 --single-branch "$FOLDER"
+fi
+
+FOLDER="$SCRIPTPATH/src/differential_drive"
+if [ ! -d "$FOLDER" ] ; then
+    git -c advice.detachedHead=false clone --depth 1 https://github.com/josephduchesne/differential-drive.git --single-branch "$FOLDER"
+    chmod +x "$FOLDER"/scripts/*
+fi
