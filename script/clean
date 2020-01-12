@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# script/build: Build the workspace
+
+set -e
+set -x
+
+# Absolute path to this script, e.g. /home/user/bin/foo.sh
+SCRIPT=$(readlink -f "$0")
+# Absolute path to the current workspace
+WSROOT=$(dirname "$SCRIPT")/..
+rm -rf $WSROOT/build
+rm -rf $WSROOT/devel
+rm -rf $WSROOT/install
