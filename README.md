@@ -1,2 +1,2 @@
-# eurobot-ros2
-ROS2 source code for the Eurobot contest - team Vision from Romania
+# eurobot-ros
+ROS source code for the Eurobot 2020 contest - team Vision from Romania
