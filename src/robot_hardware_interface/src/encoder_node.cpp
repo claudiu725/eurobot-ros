@@ -1,6 +1,7 @@
 #include "ros/ros.h"
 #include "std_msgs/Int16.h"
 
+#include <pigpio.h>
 #include "rotary_encoder.hpp"
 
 int16_t encoderValue = 0;
@@ -18,6 +19,8 @@ int main(int argc, char **argv)
     int pinA, pinB, rate;
     n.getParam("pinA", pinA);
     n.getParam("pinB", pinB);
+
+    if (gpioInitialise() < 0) return 1;
     re_decoder encoder(pinA, pinB, encoderCallback);
 
     int queueSize;
@@ -35,5 +38,6 @@ int main(int argc, char **argv)
         loopRate.sleep();
     }
     encoder.re_cancel();
+    gpioTerminate();
     return 0;
 }

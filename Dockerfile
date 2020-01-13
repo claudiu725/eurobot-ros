@@ -15,5 +15,9 @@ RUN install_packages software-properties-common
 RUN add-apt-repository ppa:ubuntu-pi-flavour-makers/ppa
 RUN install_packages pigpio
 
+RUN install_packages build-essential
+COPY . /app
+RUN . /opt/ros/melodic/setup.sh; /app/script/clean && /app/script/build
+
 RUN [ "cross-build-end" ]
 

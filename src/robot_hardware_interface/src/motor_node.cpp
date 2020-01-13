@@ -1,5 +1,5 @@
 #include "ros/ros.h"
-#include "std_msgs/Int16.h"
+#include "std_msgs/Float32.h"
 
 #include <pigpio.h>
 
@@ -17,7 +17,7 @@ uint8_t toByte(const float value)
 void motorCmdCallback(const std_msgs::Float32::ConstPtr& msg)
 {
     const float vel = msg->data;
-    gpioPWM(pinFormward, toByte(vel));
+    gpioPWM(pinForward, toByte(vel));
     gpioPWM(pinBackward, toByte(-vel));
     gpioWrite(pinOnOff, vel != 0.0);
 }
@@ -32,11 +32,12 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "motor");
     ros::NodeHandle n("~");
-    n.getParam("pin_formward", pinFormward);
+    n.getParam("pin_forward", pinForward);
     n.getParam("pin_backward", pinBackward);
     n.getParam("pin_on_off", pinOnOff);
 
-    initOutputPin(pinFormward);
+    if (gpioInitialise() < 0) return 1;
+    initOutputPin(pinForward);
     initOutputPin(pinBackward);
     initOutputPin(pinOnOff);
 
@@ -44,6 +45,12 @@ int main(int argc, char **argv)
     n.param<int>("queue_size", queueSize, 10);
     ros::Subscriber motorCmdLeft = n.subscribe("motor_cmd", queueSize, motorCmdCallback);
     ros::spin();
+
+    initOutputPin(pinForward);
+    initOutputPin(pinBackward);
+    initOutputPin(pinOnOff);
+
+    gpioTerminate();
     return 0;
 }
 
