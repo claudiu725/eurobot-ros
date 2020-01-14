@@ -1,7 +1,5 @@
 FROM balenalib/aarch64-ubuntu:bionic
 
-RUN [ "cross-build-start" ]
-
 # Prepare and install ros melodic
 RUN install_packages curl gnupg2 lsb-release
 RUN curl -sSL 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xC1CF6E31E6BADE8868B172B4F42ED6FBAB17C654' | sudo apt-key add -
@@ -19,5 +17,4 @@ RUN install_packages build-essential
 COPY . /app
 RUN . /opt/ros/melodic/setup.sh; /app/script/clean && /app/script/build
 
-RUN [ "cross-build-end" ]
-
+CMD $APPLICATION_TO_RUN
