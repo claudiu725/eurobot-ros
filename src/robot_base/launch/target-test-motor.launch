@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="robot_hardware_interface" type="motor_node" name="motor_node"><!-- launch-prefix="sudo -E LD_LIBRARY_PATH=$(optenv LD_LIBRARY_PATH)"-->
+       <rosparam param="pin_direction">2</rosparam>
+       <rosparam param="pin_pwm">3</rosparam>
+       <rosparam param="pin_power">4</rosparam>
+    </node>
+
+    <node pkg="robot_hardware_interface" type="encoder_node" name="encoder_node"><!-- launch-prefix="sudo -E LD_LIBRARY_PATH=$(optenv LD_LIBRARY_PATH)"-->
+       <rosparam param="pinA">17</rosparam>
+       <rosparam param="pinB">27</rosparam>
+    </node>
+</launch>

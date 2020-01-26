@@ -1,0 +1,12 @@
+FROM balenalib/aarch64-ubuntu:bionic
+
+RUN [ "cross-build-start" ]
+
+RUN install_packages curl gnupg2 lsb-release build-essential software-properties-common
+RUN curl -sSL 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xC1CF6E31E6BADE8868B172B4F42ED6FBAB17C654' | sudo apt-key add -
+RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+RUN add-apt-repository ppa:ubuntu-pi-flavour-makers/ppa
+RUN install_packages ros-melodic-ros-base
+RUN install_packages ros-melodic-navigation pigpio
+
+RUN [ "cross-build-end" ]

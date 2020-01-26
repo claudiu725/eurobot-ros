@@ -1,6 +1,9 @@
+.balena/
 build/
 devel/
 install/
+./Dockerfile
+./docker-compose.yml
 
 src/ydlidar
 src/differential_drive

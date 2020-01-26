@@ -1,0 +1,13 @@
+#!/bin/sh
+
+if [ -z ${TARGET_DEVICE+x} ]; then
+    echo "\nERROR: Must provide TARGET_DEVICE in environment" 1>&2
+    echo "By running \"sudo balena scan\" you can find the list of available devices" 1>&2
+    echo "Then run \"export TARGET_DEVICE=XXXXXX.local\"" 1>&2
+    exit 1
+fi
+
+set -e
+set -x
+
+balena ssh $TARGET_DEVICE

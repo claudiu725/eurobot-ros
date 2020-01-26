@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# Build the workspace
+
+set -e
+set -x
+
+SCRIPT=$(readlink -f "$0")
+WORKSPACESFOLDER=$(dirname "$SCRIPT")/../..
+
+(cd $WORKSPACESFOLDER && catkin_make)
+chmod +x $WORKSPACESFOLDER/devel/setup.sh
+
+# https://answers.ros.org/question/165246/launch-node-with-root-permissions/
+#(cd $WORKSPACESFOLDER/devel/lib/robot_hardware_interface && \
+#chown root:root motor_node && chmod a+rx motor_node && chmod u+s motor_node && \
+#chown root:root encoder_node && chmod a+rx encoder_node && chmod u+s encoder_node)

@@ -3,54 +3,67 @@
 
 #include <pigpio.h>
 
-int pinForward = 0, pinBackward = 0, pinOnOff = 0;
+int pinDirection = 0, pinPWM = 0, pinPower = 0;
 
-uint8_t toByte(const float value)
+uint8_t getDirection(const float velocity)
 {
-    if (value > 0)
-    {
-        return value * 255;
-    }
-    return 0;
+    return velocity > 0;
+}
+
+uint8_t getPWM(const float velocity)
+{
+    return static_cast<uint8_t>(fabs(velocity) * 255);
+}
+
+uint8_t getPower(const float velocity)
+{
+    return velocity != 0.0;
 }
 
 void motorCmdCallback(const std_msgs::Float32::ConstPtr& msg)
 {
-    const float vel = msg->data;
-    gpioPWM(pinForward, toByte(vel));
-    gpioPWM(pinBackward, toByte(-vel));
-    gpioWrite(pinOnOff, vel != 0.0);
+    const float velocity = msg->data;
+    gpioWrite(pinDirection, getDirection(velocity));
+    gpioPWM(pinPWM, getPWM(velocity));
+    gpioWrite(pinPower, getPower(velocity));
+}
+
+void resetPin(const int pin)
+{
+    gpioWrite(pin, 0);
 }
 
 void initOutputPin(const int pin)
 {
     gpioSetMode(pin, PI_OUTPUT);
-    gpioWrite(pin, 0);
+    resetPin(pin);
 }
 
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "motor");
     ros::NodeHandle n("~");
-    n.getParam("pin_forward", pinForward);
-    n.getParam("pin_backward", pinBackward);
-    n.getParam("pin_on_off", pinOnOff);
+    n.getParam("pin_direction", pinDirection);
+    n.getParam("pin_pwm", pinPWM);
+    n.getParam("pin_power", pinPower);
 
-    if (gpioInitialise() < 0) return 1;
-    initOutputPin(pinForward);
-    initOutputPin(pinBackward);
-    initOutputPin(pinOnOff);
+    if (gpioInitialise() < 0)
+    {
+        return 1;
+    }
+    initOutputPin(pinDirection);
+    initOutputPin(pinPWM);
+    initOutputPin(pinPower);
 
     int queueSize;
     n.param<int>("queue_size", queueSize, 10);
     ros::Subscriber motorCmdLeft = n.subscribe("motor_cmd", queueSize, motorCmdCallback);
     ros::spin();
 
-    initOutputPin(pinForward);
-    initOutputPin(pinBackward);
-    initOutputPin(pinOnOff);
+    resetPin(pinDirection);
+    resetPin(pinPWM);
+    resetPin(pinPower);
 
     gpioTerminate();
     return 0;
 }
-

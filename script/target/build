@@ -1,0 +1,23 @@
+#!/bin/sh
+
+if [ -z ${TARGET_DEVICE+x} ]; then
+    echo "\nERROR: Must provide TARGET_DEVICE in environment" 1>&2
+    echo "By running \"sudo balena scan\" you can find the list of available devices" 1>&2
+    echo "Then run \"export TARGET_DEVICE=XXXXXX.local\"" 1>&2
+    exit 1
+fi
+
+set -e
+set -x
+
+SCRIPT=$(readlink -f "$0")
+WORKSPACESFOLDER=$(dirname "$SCRIPT")/../..
+
+DOCKER_SOURCE_FOLDER=dockerfiles/target
+(cd $WORKSPACESFOLDER; \
+cp $DOCKER_SOURCE_FOLDER/app ./Dockerfile && \
+cp $DOCKER_SOURCE_FOLDER/compose.yml ./docker-compose.yml && \
+balena push $TARGET_DEVICE --logs --detached; \
+rm ./app; \
+rm ./docker-compose.yml
+)

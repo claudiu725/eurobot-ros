@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+set -x
+
+SCRIPT=$(readlink -f "$0")
+WORKSPACESFOLDER=$(dirname "$SCRIPT")/../../..
+
+DOCKER_FILE=dockerfiles/cross-build/workspace
+
+(cd $WORKSPACESFOLDER; balena build --deviceType raspberrypi3 --arch aarch64 --dockerfile $DOCKER_FILE --logs)

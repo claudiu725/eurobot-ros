@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Clean the workspace
+
+set -e
+set -x
+
+SCRIPT=$(readlink -f "$0")
+WORKSPACEFOLDER=$(dirname "$SCRIPT")/../..
+
+rm -rf $WORKSPACEFOLDER/build
+rm -rf $WORKSPACEFOLDER/devel
+rm -rf $WORKSPACEFOLDER/install

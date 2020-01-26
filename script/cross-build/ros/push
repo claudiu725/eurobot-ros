@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -e
+set -x
+
+SCRIPT=$(readlink -f "$0")
+WORKSPACESFOLDER=$(dirname "$SCRIPT")/../../..
+
+IMAGE_TAG=claudiu725/balena-ros-raspberrypi:ros
+DOCKER_FILE=dockerfiles/cross-build/ros
+
+IMAGE_ID=$(cd $WORKSPACESFOLDER; balena build --deviceType raspberrypi3 --arch aarch64 --dockerfile $DOCKER_FILE --logs 2>/dev/null | awk '/Successfully built/{print $NF}')
+docker tag $IMAGE_ID $IMAGE_TAG
+docker push $IMAGE_TAG

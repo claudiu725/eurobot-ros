@@ -1,0 +1,3 @@
+FROM claudiu725/balena-ros-raspberrypi:workspace
+
+CMD $APPLICATION_TO_RUN

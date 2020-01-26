@@ -20,15 +20,18 @@ int main(int argc, char **argv)
     n.getParam("pinA", pinA);
     n.getParam("pinB", pinB);
 
-    if (gpioInitialise() < 0) return 1;
-    re_decoder encoder(pinA, pinB, encoderCallback);
-
     int queueSize;
     n.param<int>("queue_size", queueSize, 10);
     ros::Publisher publisher = n.advertise<std_msgs::Int16>("encoder_value", queueSize);
 
-    n.param<int>("rate", rate, 10);
+    n.param<int>("rate", rate, 20);
     ros::Rate loopRate(rate);
+
+    if (gpioInitialise() < 0)
+    {
+        return 1;
+    }
+    re_decoder encoder(pinA, pinB, encoderCallback);
     while (ros::ok())
     {
         std_msgs::Int16 message;

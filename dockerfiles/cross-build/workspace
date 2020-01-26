@@ -1,0 +1,8 @@
+FROM claudiu725/balena-ros-raspberrypi:ros
+
+RUN [ "cross-build-start" ]
+
+COPY . /app
+RUN . /opt/ros/melodic/setup.sh && /app/script/host/clean && /app/script/host/build
+
+RUN [ "cross-build-end" ]

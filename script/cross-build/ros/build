@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+set -x
+
+SCRIPT=$(readlink -f "$0")
+WORKSPACESFOLDER=$(dirname "$SCRIPT")/../../..
+
+(cd $WORKSPACESFOLDER; balena build --deviceType raspberrypi3 --arch aarch64 --dockerfile dockerfiles/cross-build/ros --logs)

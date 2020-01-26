@@ -1,13 +1,12 @@
 #!/bin/sh
 
-# script/bootstrap: Resolve all dependencies that the application requires to
-#                   run.
+# Resolve all dependencies that the application requires to run.
 
 set -e
 set -x
 
 SCRIPT=$(readlink -f "$0")
-WORKSPACEPATH=$(dirname "$SCRIPT")/..
+WORKSPACEPATH=$(dirname "$SCRIPT")/../..
 
 FOLDER="$WORKSPACEPATH/src/ydlidar"
 if [ ! -d "$FOLDER" ] ; then
