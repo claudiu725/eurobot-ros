@@ -1,4 +1,4 @@
-FROM balenalib/aarch64-ubuntu:bionic
+FROM balenalib/raspberrypi3-ubuntu:bionic
 
 RUN [ "cross-build-start" ]
 

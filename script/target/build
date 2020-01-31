@@ -17,7 +17,7 @@ DOCKER_SOURCE_FOLDER=dockerfiles/target
 (cd $WORKSPACESFOLDER; \
 cp $DOCKER_SOURCE_FOLDER/app ./Dockerfile && \
 cp $DOCKER_SOURCE_FOLDER/compose.yml ./docker-compose.yml && \
-balena push $TARGET_DEVICE --logs --detached; \
+balena push $TARGET_DEVICE --logs; \
 rm ./app; \
 rm ./docker-compose.yml
 )

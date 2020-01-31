@@ -5,15 +5,14 @@ services:
         restart: always
         network_mode: host
         privileged: true
+        environment:
+            - ROS_MASTER_URI=http://localhost:11311
+            - ROS_HOSTNAME=localhost
+            - BALENA_HOST_CONFIG_iomem=relaxed
+            - BALENA_HOST_CONFIG_strict_devmem=0
         devices:
             - "/dev/mem:/dev/mem"
         cap_add:
             - SYS_RAWIO
-        labels:
-            io.balena.features.kernel-modules: '1'
-            io.balena.features.firmware: '1'
-            io.balena.features.dbus: '1'
-            io.balena.features.supervisor-api: '1'
-            io.balena.features.balena-api: '1'
-            io.balena.update.strategy: download-then-kill
-            io.balena.update.handover-timeout: '60000'
+        ports:
+            - "11311:11311"

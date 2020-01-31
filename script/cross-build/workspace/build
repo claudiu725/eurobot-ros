@@ -8,4 +8,4 @@ WORKSPACESFOLDER=$(dirname "$SCRIPT")/../../..
 
 DOCKER_FILE=dockerfiles/cross-build/workspace
 
-(cd $WORKSPACESFOLDER; balena build --deviceType raspberrypi3 --arch aarch64 --dockerfile $DOCKER_FILE --logs)
+(cd $WORKSPACESFOLDER; balena build --deviceType raspberrypi3 --arch armv7 --dockerfile $DOCKER_FILE --logs)
