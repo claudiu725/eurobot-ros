@@ -13,12 +13,12 @@ public:
     void stop();
 
 private:
-    void motorCmdCallback(const std_msgs::Float32::ConstPtr& msg);
+    void command(const std_msgs::Float32::ConstPtr& msg);
 private:
+    ros::Subscriber subscriber;
     int pinDirection = 0, pinPWM = 0, pinPower = 0;
     std::string topic;
     std::string name;
-    ros::Subscriber motorCmdSubscriber;
 };
 
 #endif // MOTOR_H_

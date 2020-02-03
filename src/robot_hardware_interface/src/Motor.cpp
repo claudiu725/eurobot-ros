@@ -8,10 +8,10 @@ void Motor::initParams(ros::NodeHandle& n, const std::string &motorName, int que
     n.getParam(name + "/pin_pwm", pinPWM);
     n.getParam(name + "/pin_power", pinPower);
     n.getParam(name + "/topic", topic);
-    motorCmdSubscriber = n.subscribe(
+    subscriber = n.subscribe(
         topic
         , queueSize
-        , &Motor::motorCmdCallback
+        , &Motor::command
         , this
     );
 }
@@ -49,7 +49,7 @@ void Motor::initHardware()
     initOutputPin(pinPower);
 }
 
-void Motor::motorCmdCallback(const std_msgs::Float32::ConstPtr& msg)
+void Motor::command(const std_msgs::Float32::ConstPtr& msg)
 {
     const float velocity = msg->data;
     gpioWrite(pinDirection, getDirection(velocity));
