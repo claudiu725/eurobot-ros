@@ -115,7 +115,7 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -137,8 +137,7 @@ include(CheckIncludeFile)
 check_include_file("pigpio.h" HAVE_PIGPIO_H)
 
 if (HAVE_PIGPIO_H)
-    add_executable(motor_node src/motor_node.cpp)
-    add_executable(encoder_node src/encoder_node.cpp src/rotary_encoder.cpp src/rotary_encoder.hpp)
+    add_executable(gpio src/gpio.cpp src/Motor.cpp src/Encoder.cpp src/rotary_encoder.cpp)
 endif()
 
 ## Rename C++ executable without prefix
@@ -153,12 +152,7 @@ endif()
 
 if (HAVE_PIGPIO_H)
 ## Specify libraries to link a library or executable target against
-target_link_libraries(motor_node
-  ${catkin_LIBRARIES}
-  -lpigpio
-)
-
-target_link_libraries(encoder_node
+target_link_libraries(gpio
   ${catkin_LIBRARIES}
   -lpigpio
 )
@@ -181,10 +175,7 @@ endif()
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
 if (HAVE_PIGPIO_H)
-install(TARGETS motor_node
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
-install(TARGETS encoder_node
+install(TARGETS gpio
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 endif()

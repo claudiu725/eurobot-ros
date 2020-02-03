@@ -3,13 +3,14 @@
 
 #include <stdint.h>
 
-typedef void (*re_decoderCB_t)(int);
+typedef void (*re_decoderCB_t)(void*, int);
 
 class re_decoder
 {
    int mygpioA, mygpioB, levA, levB, lastGpio;
 
    re_decoderCB_t mycallback;
+   void *myuserdata;
 
    void _pulse(int gpio, int level, uint32_t tick);
 
@@ -19,7 +20,7 @@ class re_decoder
 
    public:
 
-   re_decoder(int gpioA, int gpioB, re_decoderCB_t callback);
+   re_decoder(int gpioA, int gpioB, re_decoderCB_t callback, void *userdata);
    /*
       This function establishes a rotary encoder on gpioA and gpioB.
       When the encoder is turned the callback function is called.
@@ -32,4 +33,3 @@ class re_decoder
 };
 
 #endif
-

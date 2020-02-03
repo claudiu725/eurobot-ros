@@ -6,8 +6,8 @@ services:
         network_mode: host
         privileged: true
         environment:
-            - ROS_MASTER_URI=http://localhost:11311
-            - ROS_HOSTNAME=localhost
+            - ROS_HOSTNAME=192.168.1.248
+            - ROS_MASTER_URI=http://192.168.1.248:11311
             - BALENA_HOST_CONFIG_iomem=relaxed
             - BALENA_HOST_CONFIG_strict_devmem=0
         devices:

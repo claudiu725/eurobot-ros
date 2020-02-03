@@ -25,11 +25,11 @@ void re_decoder::_pulse(int gpio, int level, uint32_t tick)
 
       if ((gpio == mygpioA) && (level == 1))
       {
-         if (levB) (mycallback)(1);
+         if (levB) (mycallback)(myuserdata, 1);
       }
       else if ((gpio == mygpioB) && (level == 1))
       {
-         if (levA) (mycallback)(-1);
+         if (levA) (mycallback)(myuserdata, -1);
       }
    }
 }
@@ -45,12 +45,13 @@ void re_decoder::_pulseEx(int gpio, int level, uint32_t tick, void *user)
    mySelf->_pulse(gpio, level, tick); /* Call the instance callback. */
 }
 
-re_decoder::re_decoder(int gpioA, int gpioB, re_decoderCB_t callback)
+re_decoder::re_decoder(int gpioA, int gpioB, re_decoderCB_t callback, void *userdata)
 {
    mygpioA = gpioA;
    mygpioB = gpioB;
 
    mycallback = callback;
+   myuserdata = userdata;
 
    levA=0;
    levB=0;
