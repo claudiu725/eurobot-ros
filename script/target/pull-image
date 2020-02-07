@@ -1,0 +1,13 @@
+#!/bin/sh
+
+
+set -e
+set -x
+
+SCRIPT=$(readlink -f "$0")
+WORKSPACESFOLDER=$(dirname "$SCRIPT")/../..
+
+host/target/cli-device
+
+echo "Run:"
+echo "balena pull claudiu725/balena-ros-raspberrypi:ros"

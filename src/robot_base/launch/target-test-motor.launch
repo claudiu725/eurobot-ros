@@ -1,16 +1,52 @@
 <?xml version="1.0"?>
 <launch>
-    <node pkg="robot_hardware_interface" type="gpio" name="gpio"><!-- launch-prefix="sudo -E LD_LIBRARY_PATH=$(optenv LD_LIBRARY_PATH)"-->
-        <rosparam param="motors">[leftMotor]</rosparam>
-        <rosparam param="encoders">[leftEncoder]</rosparam>
+    <arg name="Kp" value="600"/>
+    <arg name="Kd" value="0"/>
+    <arg name="Ki" value="0"/>
+    <!--arg name="ticks_meter" value="4537.0"/-->
+    <rosparam param="ticks_meter">63661.0</rosparam>
 
-        <rosparam param="leftMotor/topic">motor_left</rosparam>
-        <rosparam param="leftMotor/pin_direction">2</rosparam>
-        <rosparam param="leftMotor/pin_pwm">3</rosparam>
-        <rosparam param="leftMotor/pin_power">4</rosparam>
-
-        <rosparam param="leftEncoder/topic">encoder_left</rosparam>
-        <rosparam param="leftEncoder/pinA">17</rosparam>
-        <rosparam param="leftEncoder/pinB">27</rosparam>
+    <!-- Load the differential drive controller -->
+    <node pkg="differential_drive" type="diff_tf.py" name="diff_tf">
+       <rosparam param="rate">10.0</rosparam>
+       <rosparam param="base_width">0.265</rosparam>
+       <rosparam param="base_frame_id">base_link</rosparam>
+       <remap from="lwheel" to="encoder_left"/>
+       <remap from="rwheel" to="encoder_right"/>
     </node>
+
+    <!--node pkg="differential_drive" type="wheel_scaler.py" name="wheel_scaler" output="screen"/-->
+    <node pkg="differential_drive" type="pid_velocity" name="lpid_velocity">
+        <rosparam param="Kp" subst_value="true">$(arg Kp)</rosparam>
+        <rosparam param="Ki" subst_value="true">$(arg Kd)</rosparam>
+        <rosparam param="Kd" subst_value="true">$(arg Ki)</rosparam>
+        <rosparam param="rate">10</rosparam>
+        <rosparam param="rolling_pts">3</rosparam>
+        <!--rosparam param="ticks_meter">$(arg ticks_meter)</rosparam-->
+        <remap from="wheel" to="encoder_left"/>
+        <remap from="motor_cmd" to="motor_cmd_left"/>
+        <remap from="wheel_vtarget" to="lwheel_vtarget"/>
+        <remap from="wheel_vel" to="lwheel_vel"/>
+    </node>
+    <node pkg="differential_drive" type="pid_velocity" name="rpid_velocity">
+        <rosparam param="Kp" subst_value="true">$(arg Kp)</rosparam>
+        <rosparam param="Ki" subst_value="true">$(arg Kd)</rosparam>
+        <rosparam param="Kd" subst_value="true">$(arg Ki)</rosparam>
+        <rosparam param="rate">10</rosparam>
+        <rosparam param="rolling_pts">3</rosparam>
+        <!--rosparam param="ticks_meter">$(arg ticks_meter)</rosparam-->
+        <remap from="wheel" to="encoder_right"/>
+        <remap from="motor_cmd" to="motor_cmd_right"/>
+        <remap from="wheel_vtarget" to="rwheel_vtarget"/>
+        <remap from="wheel_vel" to="rwheel_vel"/>
+    </node>
+
+    <node pkg="differential_drive" type="twist_to_motors.py" name="twist_to_motors" output="screen">
+      <rosparam param="base_width">0.245</rosparam>
+      <rosparam param="rate">10</rosparam>
+      <rosparam param="timeout_ticks">2</rosparam>
+    </node>
+
+    <rosparam file="$(find robot_base)/launch/test-pins.yml" />
+    <node pkg="robot_hardware_interface" type="gpio" name="gpio" />
 </launch>

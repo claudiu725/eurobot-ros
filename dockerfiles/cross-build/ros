@@ -7,6 +7,10 @@ RUN curl -sSL 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xC1CF6E31E6
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 RUN add-apt-repository ppa:ubuntu-pi-flavour-makers/ppa
 RUN install_packages ros-melodic-ros-base
-RUN install_packages ros-melodic-navigation pigpio
+RUN install_packages ros-melodic-navigation pigpio git
+COPY ./script/host/bootstrap /app/script/host/
+RUN /app/script/host/bootstrap
+COPY ./script/host/build-external /app/script/host/
+RUN . /opt/ros/melodic/setup.sh && /app/script/host/build-external
 
 RUN [ "cross-build-end" ]

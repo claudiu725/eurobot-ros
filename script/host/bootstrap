@@ -8,12 +8,12 @@ set -x
 SCRIPT=$(readlink -f "$0")
 WORKSPACEPATH=$(dirname "$SCRIPT")/../..
 
-FOLDER="$WORKSPACEPATH/src/ydlidar"
+FOLDER="$WORKSPACEPATH/external/src/ydlidar"
 if [ ! -d "$FOLDER" ] ; then
     git -c advice.detachedHead=false clone --depth 1 https://github.com/EAIBOT/ydlidar.git --branch 1.3.9 --single-branch "$FOLDER"
 fi
 
-FOLDER="$WORKSPACEPATH/src/differential_drive"
+FOLDER="$WORKSPACEPATH/external/src/differential_drive"
 if [ ! -d "$FOLDER" ] ; then
     git -c advice.detachedHead=false clone --depth 1 https://github.com/josephduchesne/differential-drive.git --single-branch "$FOLDER"
     chmod +x "$FOLDER"/scripts/*

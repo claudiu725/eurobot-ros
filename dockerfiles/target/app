@@ -2,6 +2,7 @@ FROM claudiu725/balena-ros-raspberrypi:ros
 ENV UDEV=on
 COPY . /app
 RUN . /opt/ros/melodic/setup.sh && /app/script/host/build
-CMD chmod 666 /dev/mem && . /opt/ros/melodic/setup.sh && \
+CMD chmod 666 /dev/mem && \
+ . /opt/ros/melodic/setup.sh && \
  . /app/devel/setup.sh && \
  roslaunch robot_base target-test-motor.launch

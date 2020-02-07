@@ -1,0 +1,28 @@
+gpio:
+    motor_left:
+        type: motor
+        topic: /motor_cmd_left
+        pins:
+            direction: 17
+            direction_not: 27
+            pwm: 22
+    encoder_left:
+        type: encoder
+        topic: /encoder_left
+        pins:
+            A: 23
+            B: 24
+
+    motor_right:
+        type: motor
+        topic: /motor_cmd_right
+        pins:
+            direction: 13
+            direction_not: 19
+            pwm: 26
+    encoder_right:
+        type: encoder
+        topic: /encoder_right
+        pins:
+            A: 5
+            B: 6

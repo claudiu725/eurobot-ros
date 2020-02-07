@@ -2,10 +2,8 @@
 build/
 devel/
 install/
+external/
 /Dockerfile
 /docker-compose.yml
-
-src/ydlidar
-src/differential_drive
 
 *.pyc

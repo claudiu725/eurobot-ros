@@ -6,4 +6,4 @@ set -x
 SCRIPT=$(readlink -f "$0")
 WORKSPACESFOLDER=$(dirname "$SCRIPT")/../../..
 
-(cd $WORKSPACESFOLDER; balena build --deviceType raspberrypi3 --arch armv7 --dockerfile dockerfiles/cross-build/ros --logs)
+(cd $WORKSPACESFOLDER; rm -f Dockerfile docker-compose.yml; balena build --deviceType raspberrypi3 --arch armv7 --dockerfile dockerfiles/cross-build/ros --logs)
