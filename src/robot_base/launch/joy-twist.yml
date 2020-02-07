@@ -2,13 +2,13 @@ teleop:
   move:
     type: topic
     message_type: geometry_msgs/Twist
-    topic_name: /gpio/motor_left
+    topic_name: /twist
     axis_mappings:
       -
         axis: 1
         target: linear.x
         scale: 1.0
       -
-        axis: 2
+        axis: 0
         target: angular.z
         scale: 1.0
