@@ -1,5 +1,6 @@
 #include "Motor.h"
 #include <pigpio.h>
+#include <ros/console.h>
 
 void Motor::initParams(ros::NodeHandle& n, const std::string &motorName, int queueSize)
 {
@@ -9,6 +10,16 @@ void Motor::initParams(ros::NodeHandle& n, const std::string &motorName, int que
     n.param<int>("/gpio/" + name + "/pins/pwm", pinPWM, 0);
     n.param<int>("/gpio/" + name + "/pins/power", pinPower, 0);
     n.param<std::string>("/gpio/" + name + "/topic", topic, name);
+    ROS_INFO_STREAM("Initialized motor:\n"
+        << name << ":\n"
+        << "    type: motor\n"
+        << "    topic: " << topic << "\n"
+        << "    pins:" << "\n"
+        << "        direction: " << pinDirection << "\n"
+        << "        direction_not: " << pinDirection2 << "\n"
+        << "        pwm: " << pinPWM << "\n"
+        << "        power: " << topic << "\n"
+    );
     subscriber = n.subscribe(
         topic
         , queueSize
@@ -57,7 +68,7 @@ uint8_t getDirection(const float velocity)
 
 uint8_t getPWM(const float velocity)
 {
-    return static_cast<uint8_t>(fabs(velocity) * 255);
+    return static_cast<uint8_t>(fabs(velocity));
 }
 
 uint8_t getPower(const float velocity)

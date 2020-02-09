@@ -7,8 +7,9 @@ teleop:
       -
         axis: 1
         target: linear.x
-        scale: 1.0
+        scale: 0.074926984788117
+
       -
         axis: 0
         target: angular.z
-        scale: 1.0
+        scale: 0.749269847881166

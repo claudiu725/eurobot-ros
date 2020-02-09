@@ -1,0 +1,6 @@
+#!/bin/sh
+
+export TARGET_DEVICE=78f12e5.local
+export ROS_HOSTNAME=192.168.1.227
+export ROS_MASTER_URI=http://$TARGET_DEVICE:11311/
+. devel/setup.sh

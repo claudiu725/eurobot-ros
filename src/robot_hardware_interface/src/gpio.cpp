@@ -75,7 +75,7 @@ int main(int argc, char **argv)
         }
         else
         {
-            ROS_FATAL_STREAM("Invalid type for " << device);
+            ROS_FATAL_STREAM("Invalid type for device: " << device);
             return 1;
         }
     }
@@ -85,9 +85,21 @@ int main(int argc, char **argv)
     initParams(n, motorNames, motors, queueSize);
     initParams(n, encoderNames, encoders, rate, queueSize);
 
-    if (gpioInitialise() < 0)
     {
-        return 1;
+        int ret = gpioCfgMemAlloc(PI_MEM_ALLOC_PAGEMAP);
+        if (ret < 0)
+        {
+            ROS_FATAL_STREAM("gpioCfgMemAlloc(PI_MEM_ALLOC_PAGEMAP) failed with code: " << ret);
+            return 1;
+        }
+    }
+    {
+        int ret = gpioInitialise();
+        if (ret < 0)
+        {
+            ROS_FATAL_STREAM("gpioInitialise() failed with code: " << ret);
+            return 1;
+        }
     }
     initHardware(motors);
     initHardware(encoders);

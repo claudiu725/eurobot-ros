@@ -11,6 +11,14 @@ void Encoder::initParams(ros::NodeHandle& n, const std::string &encoderName, int
     n.getParam("/gpio/" + name + "/pins/A", pinA);
     n.getParam("/gpio/" + name + "/pins/B", pinB);
     n.param<std::string>("/gpio/" + name + "/topic", topic, name);
+    ROS_INFO_STREAM("Initialized encoder:\n"
+        << name << ":\n"
+        << "    type: encoder\n"
+        << "    topic: " << topic << "\n"
+        << "    pins:" << "\n"
+        << "        A: " << pinA << "\n"
+        << "        B: " << pinB << "\n"
+    );
     publisher = n.advertise<std_msgs::Int16>(topic, queueSize);
     timer = n.createTimer(ros::Duration(1.0 / rate), &Encoder::publish, this);
 }
