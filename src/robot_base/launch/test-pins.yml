@@ -2,27 +2,29 @@ gpio:
     motor_left:
         type: motor
         topic: /motor_cmd_left
+        reverse: true
         pins:
-            direction: 17
-            direction_not: 27
-            pwm: 22
+            pwm: 5
+            direction: 6
+            direction_not: 13
     encoder_left:
         type: encoder
         topic: /encoder_left
+        reverse: true
         pins:
-            A: 23
-            B: 24
+            A: 19
+            B: 26
 
     motor_right:
         type: motor
         topic: /motor_cmd_right
         pins:
-            direction: 13
-            direction_not: 19
-            pwm: 26
+            pwm: 14
+            direction: 15
+            direction_not: 18
     encoder_right:
         type: encoder
         topic: /encoder_right
         pins:
-            A: 5
-            B: 6
+            A: 23
+            B: 24

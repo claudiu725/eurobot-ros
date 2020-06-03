@@ -9,6 +9,7 @@ void Motor::initParams(ros::NodeHandle& n, const std::string &motorName, int que
     n.param<int>("/gpio/" + name + "/pins/direction_not", pinDirection2, 0);
     n.param<int>("/gpio/" + name + "/pins/pwm", pinPWM, 0);
     n.param<int>("/gpio/" + name + "/pins/power", pinPower, 0);
+    n.param<bool>("/gpio/" + name + "/reverse", reverse, false);
     n.param<std::string>("/gpio/" + name + "/topic", topic, name);
     ROS_INFO_STREAM("Initialized motor:\n"
         << name << ":\n"
@@ -79,8 +80,9 @@ uint8_t getPower(const float velocity)
 void Motor::command(const std_msgs::Float32::ConstPtr& msg)
 {
     const float velocity = msg->data;
-    writeIf(pinDirection, getDirection(velocity));
-    writeIf(pinDirection2, !getDirection(velocity));
+    const uint8_t direction = reverse ^ getDirection(velocity);
+    writeIf(pinDirection, direction);
+    writeIf(pinDirection2, !direction);
     pwmIf(pinPWM, getPWM(velocity));
     writeIf(pinPower, getPower(velocity));
 }

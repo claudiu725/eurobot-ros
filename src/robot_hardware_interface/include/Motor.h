@@ -16,6 +16,7 @@ private:
 private:
     ros::Subscriber subscriber;
     int pinDirection = 0, pinDirection2 = 0, pinPWM = 0, pinPower = 0;
+    bool reverse = false;
     std::string topic;
     std::string name;
 };

@@ -11,6 +11,7 @@ void Encoder::initParams(ros::NodeHandle& n, const std::string &encoderName, int
     n.getParam("/gpio/" + name + "/pins/A", pinA);
     n.getParam("/gpio/" + name + "/pins/B", pinB);
     n.param<std::string>("/gpio/" + name + "/topic", topic, name);
+    n.param<bool>("/gpio/" + name + "/reverse", reverse, false);
     ROS_INFO_STREAM("Initialized encoder:\n"
         << name << ":\n"
         << "    type: encoder\n"
@@ -23,9 +24,10 @@ void Encoder::initParams(ros::NodeHandle& n, const std::string &encoderName, int
     timer = n.createTimer(ros::Duration(1.0 / rate), &Encoder::publish, this);
 }
 
-void encoderCallback(void *encoder, int diff)
+void encoderCallback(void *encoderPtr, int diff)
 {
-    static_cast<Encoder*>(encoder)->encoderValue += diff;
+    Encoder &encoder(*static_cast<Encoder*>(encoderPtr));
+    encoder.encoderValue += diff * (encoder.reverse ? -1 : 1);
 }
 
 void Encoder::initHardware()

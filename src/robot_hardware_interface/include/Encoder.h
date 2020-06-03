@@ -20,6 +20,7 @@ private:
     ros::Timer timer;
     int16_t encoderValue = 0;
     int pinA = 0, pinB = 0, rate = 0;
+    bool reverse = false;
     std::string name;
     std::string topic;
 
